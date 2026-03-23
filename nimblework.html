@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nimblework — Achinthya Hemachandra</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "background":                "#fcf9f4",
+            "surface":                   "#fcf9f4",
+            "surface-bright":            "#fcf9f4",
+            "surface-dim":               "#dcdad5",
+            "surface-container-lowest":  "#ffffff",
+            "surface-container-low":     "#f6f3ee",
+            "surface-container":         "#f0ede9",
+            "surface-container-high":    "#ebe8e3",
+            "surface-container-highest": "#e5e2dd",
+            "surface-variant":           "#e5e2dd",
+            "on-surface":                "#1c1c19",
+            "on-surface-variant":        "#3f4946",
+            "inverse-surface":           "#31302d",
+            "inverse-on-surface":        "#f3f0eb",
+            "outline":                   "#6f7976",
+            "outline-variant":           "#bec9c5",
+            "primary":                   "#005247",
+            "on-primary":                "#ffffff",
+            "primary-container":         "#1a6b5e",
+            "on-primary-container":      "#9ee9d8",
+            "primary-fixed":             "#a6f1e0",
+            "primary-fixed-dim":         "#8ad4c4",
+            "on-primary-fixed":          "#00201b",
+            "on-primary-fixed-variant":  "#005045",
+            "inverse-primary":           "#8ad4c4",
+            "secondary":                 "#186a5d",
+            "on-secondary":              "#ffffff",
+            "secondary-container":       "#a6f1e0",
+            "on-secondary-container":    "#217063",
+            "secondary-fixed":           "#a6f1e0",
+            "secondary-fixed-dim":       "#8ad4c4",
+            "on-secondary-fixed":        "#00201b",
+            "on-secondary-fixed-variant":"#005045",
+            "tertiary":                  "#6e3b00",
+            "on-tertiary":               "#ffffff",
+            "tertiary-container":        "#904f00",
+            "on-tertiary-container":     "#ffd2ae",
+            "tertiary-fixed":            "#ffdcc1",
+            "tertiary-fixed-dim":        "#ffb779",
+            "on-tertiary-fixed":         "#2e1500",
+            "on-tertiary-fixed-variant": "#6c3a00",
+            "surface-tint":              "#186a5d",
+            "error":                     "#ba1a1a",
+            "on-error":                  "#ffffff",
+            "error-container":           "#ffdad6",
+            "on-error-container":        "#93000a",
+          },
+          fontFamily: {
+            "headline": ["Newsreader", "serif"],
+            "body":     ["Inter", "sans-serif"],
+            "label":    ["Inter", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "0.125rem",
+            "lg":    "0.25rem",
+            "xl":    "0.5rem",
+            "full":  "0.75rem",
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: #fcf9f4;
+      color: #1c1c19;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+</head>
+<body class="font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md">
+    <div class="max-w-[780px] mx-auto px-6 py-5 flex justify-between items-center">
+
+      <a href="index.html" class="font-headline italic text-lg text-on-surface tracking-tight leading-none">
+        Achinthya Hemachandra
+      </a>
+
+      <div class="flex items-center gap-8">
+        <a
+          href="#"
+          class="font-label text-[11px] uppercase tracking-[0.15em] text-primary border border-primary px-4 py-1.5 rounded hover:bg-primary/5 transition-colors duration-200"
+        >
+          Resume
+        </a>
+      </div>
+
+    </div>
+  </nav>
+
+  <main class="max-w-[780px] mx-auto px-6">
+
+    <!-- Back link -->
+    <div class="pt-28 pb-10">
+      <a
+        href="index.html"
+        class="font-label text-[11px] uppercase tracking-[0.15em] text-primary hover:text-primary-container transition-colors duration-200"
+      >
+        &larr; Home
+      </a>
+    </div>
+
+    <!-- Hero Block -->
+    <section class="pb-20">
+
+      <p class="font-label text-[11px] uppercase tracking-[0.2em] text-primary mb-3">
+        Nimblework
+      </p>
+
+      <p class="font-label text-[11px] uppercase tracking-[0.15em] text-on-surface-variant mb-10">
+        Product Manager &middot; 2022–2023
+      </p>
+
+      <h1 class="font-headline text-5xl md:text-6xl leading-[1.15] text-on-surface tracking-tight mb-10 max-w-[640px]">
+        Rebuilding onboarding for an enterprise SaaS platform targeting SMB teams.
+      </h1>
+
+      <!-- Metadata tags -->
+      <div class="flex flex-wrap gap-x-6 gap-y-2 mb-10">
+        <span class="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">
+          <span class="text-on-surface font-semibold">Industry</span> &nbsp;B2B SaaS
+        </span>
+        <span class="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">&middot;</span>
+        <span class="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">
+          <span class="text-on-surface font-semibold">Scope</span> &nbsp;Product Strategy &amp; Growth
+        </span>
+        <span class="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">&middot;</span>
+        <span class="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">
+          <span class="text-on-surface font-semibold">Type</span> &nbsp;Onboarding &amp; Adoption
+        </span>
+      </div>
+
+      <!-- Teal rule -->
+      <div class="h-[2px] bg-primary/25"></div>
+
+    </section>
+
+    <!-- Hero Image -->
+    <div class="mb-20 mt-16 w-full h-[420px] bg-surface-container-low flex items-center justify-center" style="border-radius: 12px;">
+      <span class="font-label text-[11px] uppercase tracking-[0.15em] text-on-surface-variant">Nimblework OKR Platform — Image placeholder</span>
+    </div>
+
+    <!-- Case Study Sections -->
+    <div class="space-y-24 pb-28">
+
+      <!-- Section 01 -->
+      <section>
+        <div class="flex items-baseline gap-5 mb-8">
+          <span class="font-headline text-8xl leading-none text-primary opacity-20 select-none shrink-0">01</span>
+          <h2 class="font-headline text-3xl text-on-surface">Enterprise software. SMB expectations.</h2>
+        </div>
+        <div class="space-y-6 text-[1.125rem] leading-[1.75] text-on-surface-variant">
+          <p>
+            Digite had built a powerful enterprise agile platform over many years. Nimblework OKRs was the attempt to take that technology and bring it to small and mid-sized teams — the kind that were used to Asana and Monday, not heavyweight project management suites.
+          </p>
+          <p>
+            The core differentiator was real: OKR-driven execution that linked goals directly to work items and Jira tickets. But the product experience assumed trained users, guided onboarding, and high tolerance for complexity. None of those assumptions held for SMB buyers.
+          </p>
+          <p>
+            The result was a consistent pattern in analytics: new users explored roughly 10% of the feature set, many dropped off after initial exploration, and demos performed well when guided but struggled in self-serve.
+          </p>
+        </div>
+      </section>
+
+      <!-- Section 02 -->
+      <section>
+        <div class="flex items-baseline gap-5 mb-8">
+          <span class="font-headline text-8xl leading-none text-primary opacity-20 select-none shrink-0">02</span>
+          <h2 class="font-headline text-3xl text-on-surface">Onboarding isn't a UX problem. It's a product strategy decision.</h2>
+        </div>
+        <div class="space-y-6 text-[1.125rem] leading-[1.75] text-on-surface-variant">
+          <p>
+            The instinct was to add features — more integrations, more templates, more guided tooltips. My read was different. The product wasn't failing because it lacked features. It was failing because it didn't have a clear opinion about what a new user should do first.
+          </p>
+          <p>
+            The bet was simple: reduce the path from login to first value, make that path opinionated, and trust that users who experienced the core workflow would stay. Everything else was noise until that was solved.
+          </p>
+          <p>
+            This also meant negotiating the removal of legacy features — waterfall-style project management, work breakdown structures — that carried emotional weight internally but created cognitive load for new users. That negotiation was as much a part of the work as the product decisions.
+          </p>
+        </div>
+      </section>
+
+      <!-- Section 03 -->
+      <section>
+        <div class="flex items-baseline gap-5 mb-8">
+          <span class="font-headline text-8xl leading-none text-primary opacity-20 select-none shrink-0">03</span>
+          <h2 class="font-headline text-3xl text-on-surface">Simplify, sequence, then scale.</h2>
+        </div>
+        <div class="space-y-6 text-[1.125rem] leading-[1.75] text-on-surface-variant">
+          <p>The work broke into three tracks:</p>
+          <div class="space-y-6 pl-6 border-l-2 border-primary/20">
+            <div>
+              <p class="font-semibold text-on-surface mb-1">Onboarding redesign</p>
+              <p>Mapping the full user journey from signup to first board, identifying every unnecessary step, and rebuilding the flow with a clear opinionated path. The result was a reduction from roughly 11 clicks to 5 to reach first value.</p>
+            </div>
+            <div>
+              <p class="font-semibold text-on-surface mb-1">Templates as a product strategy</p>
+              <p>Building domain-specific templates for different use cases: marketing, engineering, HR, executive OKRs. Each template came with pre-configured views, sample data, and dashboards so users could experience value immediately without configuration. Templates became the primary discovery mechanism for new users.</p>
+            </div>
+            <div>
+              <p class="font-semibold text-on-surface mb-1">Integrations and automation</p>
+              <p>Designing cross-tool workflows that allowed work to be created and updated from Gmail, Slack, and Microsoft Teams. The goal was to reduce context-switching for SMB users who already lived in those tools. Extended through Zapier for custom team processes.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 04 -->
+      <section>
+        <div class="flex items-baseline gap-5 mb-8">
+          <span class="font-headline text-8xl leading-none text-primary opacity-20 select-none shrink-0">04</span>
+          <h2 class="font-headline text-3xl text-on-surface">Simpler entry. Stronger retention signal.</h2>
+        </div>
+        <div class="space-y-6 text-[1.125rem] leading-[1.75] text-on-surface-variant">
+          <p>
+            The onboarding redesign reduced time-to-first-value significantly — from roughly 11 clicks to 5 to reach a first working board. Template adoption became a measurable leading indicator for sustained engagement.
+          </p>
+          <p>
+            The deeper shift was internal: the team moved from thinking about feature accumulation to thinking about user-centric simplification. That mindset change showed up in how roadmap decisions were made and how the product was positioned in sales conversations.
+          </p>
+          <p>
+            What I'd do differently: push for earlier instrumentation of the onboarding funnel so decisions were driven by data from day one rather than analytics that came in after the fact. The Whatfix data was valuable — but we were always slightly behind where we needed to be in understanding drop-off patterns.
+          </p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Impact Block -->
+  <section class="bg-surface-container-low">
+    <div class="max-w-[780px] mx-auto px-6 py-20">
+
+      <div class="mb-14">
+        <p class="font-label text-[11px] uppercase tracking-[0.2em] text-primary mb-4">Impact</p>
+        <h2 class="font-headline text-4xl text-on-surface">What the work delivered.</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <div class="p-10 rounded-xl flex flex-col" style="background-color: #eef2ee;">
+          <span class="material-symbols-outlined text-primary mb-4" style="font-size: 28px;">trending_down</span>
+          <p class="font-headline text-3xl text-on-surface mb-2">33% faster</p>
+          <p class="font-body text-sm text-on-surface-variant leading-relaxed">Reduction in onboarding time to first value</p>
+        </div>
+
+        <div class="p-10 rounded-xl flex flex-col" style="background-color: #eef2ee;">
+          <span class="material-symbols-outlined text-primary mb-4" style="font-size: 28px;">space_dashboard</span>
+          <p class="font-headline text-3xl text-on-surface mb-2">Templates</p>
+          <p class="font-body text-sm text-on-surface-variant leading-relaxed">Primary adoption lever for new user activation</p>
+        </div>
+
+        <div class="p-10 rounded-xl flex flex-col" style="background-color: #eef2ee;">
+          <span class="material-symbols-outlined text-primary mb-4" style="font-size: 28px;">hub</span>
+          <p class="font-headline text-3xl text-on-surface mb-2">3 integrations</p>
+          <p class="font-body text-sm text-on-surface-variant leading-relaxed">Gmail, Slack, Teams — reducing context switching</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Navigation -->
+  <section class="bg-surface-container-low">
+    <div class="max-w-[780px] mx-auto px-6 py-20 text-center">
+
+      <div class="mb-10">
+        <p class="font-label text-[11px] uppercase tracking-[0.2em] text-primary mb-4">Next Case Study</p>
+        <a
+          href="sony.html"
+          class="font-headline text-3xl text-primary hover:text-primary-container transition-colors duration-200"
+        >
+          Owning release quality for the PlayStation SDK. &rarr;
+        </a>
+      </div>
+
+      <div class="h-[1px] bg-primary/20 mb-10"></div>
+
+      <a
+        href="index.html"
+        class="font-label text-[11px] uppercase tracking-[0.15em] text-primary hover:text-primary-container transition-colors duration-200"
+      >
+        &larr; Home
+      </a>
+
+    </div>
+  </section>
+
+</body>
+</html>
