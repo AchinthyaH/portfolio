@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI &amp; Ways of Working — Achinthya Hemachandra</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "background":                "#fcf9f4",
+            "surface":                   "#fcf9f4",
+            "surface-bright":            "#fcf9f4",
+            "surface-dim":               "#dcdad5",
+            "surface-container-lowest":  "#ffffff",
+            "surface-container-low":     "#f6f3ee",
+            "surface-container":         "#f0ede9",
+            "surface-container-high":    "#ebe8e3",
+            "surface-container-highest": "#e5e2dd",
+            "surface-variant":           "#e5e2dd",
+            "on-surface":                "#1c1c19",
+            "on-surface-variant":        "#3f4946",
+            "inverse-surface":           "#31302d",
+            "inverse-on-surface":        "#f3f0eb",
+            "outline":                   "#6f7976",
+            "outline-variant":           "#bec9c5",
+            "primary":                   "#005247",
+            "on-primary":                "#ffffff",
+            "primary-container":         "#1a6b5e",
+            "on-primary-container":      "#9ee9d8",
+            "primary-fixed":             "#a6f1e0",
+            "primary-fixed-dim":         "#8ad4c4",
+            "on-primary-fixed":          "#00201b",
+            "on-primary-fixed-variant":  "#005045",
+            "inverse-primary":           "#8ad4c4",
+            "secondary":                 "#186a5d",
+            "on-secondary":              "#ffffff",
+            "secondary-container":       "#a6f1e0",
+            "on-secondary-container":    "#217063",
+            "secondary-fixed":           "#a6f1e0",
+            "secondary-fixed-dim":       "#8ad4c4",
+            "on-secondary-fixed":        "#00201b",
+            "on-secondary-fixed-variant":"#005045",
+            "tertiary":                  "#6e3b00",
+            "on-tertiary":               "#ffffff",
+            "tertiary-container":        "#904f00",
+            "on-tertiary-container":     "#ffd2ae",
+            "tertiary-fixed":            "#ffdcc1",
+            "tertiary-fixed-dim":        "#ffb779",
+            "on-tertiary-fixed":         "#2e1500",
+            "on-tertiary-fixed-variant": "#6c3a00",
+            "surface-tint":              "#186a5d",
+            "error":                     "#ba1a1a",
+            "on-error":                  "#ffffff",
+            "error-container":           "#ffdad6",
+            "on-error-container":        "#93000a",
+          },
+          fontFamily: {
+            "headline": ["Newsreader", "serif"],
+            "body":     ["Inter", "sans-serif"],
+            "label":    ["Inter", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "0.125rem",
+            "lg":    "0.25rem",
+            "xl":    "0.5rem",
+            "full":  "0.75rem",
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: #fcf9f4;
+      color: #1c1c19;
+      -webkit-font-smoothing: antialiased;
+    }
+    .code-block {
+      background-color: #1e2a27;
+      color: #a6f1e0;
+      font-family: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+      font-size: 0.8125rem;
+      line-height: 1.7;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      overflow-x: auto;
+    }
+    .code-comment { color: #6a9e8e; }
+    .code-method  { color: #8ad4c4; }
+    .code-string  { color: #ffd2ae; }
+  </style>
+</head>
+<body class="font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md">
+    <div class="max-w-[780px] mx-auto px-6 py-5 flex justify-between items-center">
+
+      <a href="index.html" class="font-headline italic text-lg text-on-surface tracking-tight leading-none">
+        Achinthya Hemachandra
+      </a>
+
+      <div class="flex items-center gap-8">
+        <a
+          href="#"
+          class="font-label text-[11px] uppercase tracking-[0.15em] text-primary border border-primary px-4 py-1.5 rounded hover:bg-primary/5 transition-colors duration-200"
+        >
+          Resume
+        </a>
+      </div>
+
+    </div>
+  </nav>
+
+  <main class="max-w-[780px] mx-auto px-6">
+
+    <!-- Back link -->
+    <div class="pt-28 pb-10">
+      <a
+        href="index.html"
+        class="font-label text-[11px] uppercase tracking-[0.15em] text-primary hover:text-primary-container transition-colors duration-200"
+      >
+        &larr; Home
+      </a>
+    </div>
+
+    <!-- Hero Block -->
+    <section class="pb-16">
+
+      <p class="font-label text-[11px] uppercase tracking-[0.2em] text-primary mb-6">
+        AI &amp; Ways of Working
+      </p>
+
+      <h1 class="font-headline text-5xl md:text-6xl leading-[1.15] text-on-surface tracking-tight mb-16 max-w-[640px]">
+        AI as a <span class="text-primary">working partner.</span>
+      </h1>
+
+      <!-- Opening paragraphs -->
+      <div class="space-y-7 text-[1.125rem] leading-[1.75] text-on-surface-variant max-w-[680px]">
+
+        <p>
+          AI has genuinely changed what one person can build, analyse, and ship. Things that used to need a team — data pipelines, localised content at scale, functional prototypes, server infrastructure — are now within reach of a single person. This portfolio is a decent example of that.
+        </p>
+
+        <p>
+          The catch is that the tool getting more powerful doesn't mean it's getting wiser. I think about it through two analogies. A calculator given a pen — because I'm asking a computational model to do creative work, which means I need to stay close to what it's actually producing. And an autopilot given the cockpit — because no matter how capable the system, the final call has to be human. Both feel true at the same time.
+        </p>
+
+        <p>
+          The industry has a term for what happens when people stop paying attention — comprehension debt. It's real, and I've seen it. I haven't written production code in years, but when I build with AI I make sure I understand what's happening well enough to debug it when something goes sideways. And something always goes sideways eventually.
+        </p>
+
+        <p class="text-on-surface font-medium">
+          Here's what I've actually built.
+        </p>
+
+      </div>
+
+      <!-- Thin teal rule -->
+      <div class="h-[1px] mt-16" style="background-color: rgba(0, 82, 71, 0.20);"></div>
+
+    </section>
+
+  </main>
+
+  <!-- Showcase Section -->
+  <section class="bg-surface-container-low">
+    <div class="max-w-[780px] mx-auto px-6 py-20">
+
+      <div class="mb-14">
+        <p class="font-label text-[11px] uppercase tracking-[0.2em] text-primary mb-4">Live Work</p>
+        <h2 class="font-headline text-4xl text-on-surface">Things you can <span class="text-primary">click and verify.</span></h2>
+      </div>
+
+      <!-- Cards stacked vertically -->
+      <div class="space-y-6">
+
+        <!-- Card 1 — This Portfolio -->
+        <div class="p-10 rounded-xl" style="background-color: #eef2ee;">
+          <div class="flex flex-col md:flex-row gap-10">
+
+            <!-- Left: project info -->
+            <div class="flex-1 min-w-0">
+              <p class="font-label text-[10px] uppercase tracking-[0.2em] text-primary mb-2">Stitch by Google &middot; Claude Code &middot; GitHub Pages</p>
+              <p class="font-label text-[10px] text-on-surface-variant mb-4">A portfolio site built end-to-end using AI tooling</p>
+              <h3 class="font-headline text-2xl text-on-surface mb-4">This portfolio</h3>
+              <p class="text-[1rem] leading-[1.75] text-on-surface-variant mb-6">
+                Needed a portfolio that reflected how I actually work — not just what I've done. Existing templates felt generic. Building from scratch with AI tools also turned the process into a live demonstration of the workflow itself. The full pipeline — visual design, code, deployment — was completed without touching a traditional IDE or hiring a developer.
+              </p>
+              <a
+                href="https://achinthyah.github.io/portfolio"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-label text-[11px] uppercase tracking-[0.15em] text-primary hover:text-primary-container transition-colors duration-200"
+              >
+                View live site &rarr;
+              </a>
+            </div>
+
+            <!-- Right: stats -->
+            <div class="flex-shrink-0 md:w-56 flex flex-col justify-center gap-5">
+              <div class="p-5 rounded-xl bg-surface-container-low">
+                <p class="font-headline text-xl text-primary mb-1">5 pages built</p>
+                <p class="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">HTML + Tailwind</p>
+              </div>
+              <div class="p-5 rounded-xl bg-surface-container-low">
+                <p class="font-headline text-xl text-primary mb-1">Stitch → Claude Code</p>
+                <p class="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Full pipeline</p>
+              </div>
+              <div class="p-5 rounded-xl bg-surface-container-low">
+                <p class="font-headline text-xl text-primary mb-1">0 templates used</p>
+                <p class="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Built from scratch</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Card 2 — Foundry VTT Server -->
+        <div class="p-10 rounded-xl" style="background-color: #eef2ee;">
+          <div class="flex flex-col md:flex-row gap-10">
+
+            <!-- Left: project info -->
+            <div class="flex-1 min-w-0">
+              <p class="font-label text-[10px] uppercase tracking-[0.2em] text-primary mb-2">ChatGPT &middot; Oracle Cloud &middot; Docker &middot; Ubuntu &middot; FoundryVTT</p>
+              <p class="font-label text-[10px] text-on-surface-variant mb-4">A self-hosted multiplayer server for tabletop RPG sessions</p>
+              <h3 class="font-headline text-2xl text-on-surface mb-4">Headless game server — five cities, zero cost</h3>
+              <p class="text-[1rem] leading-[1.75] text-on-surface-variant mb-4">
+                My players are spread across Bangalore, Chennai, Manali, Thailand, and Canada. Commercial solutions were either expensive or had latency issues. Building my own gave full control and zero recurring cost — hosted on Oracle Cloud's always-free tier, running continuously with negligible resource usage.
+              </p>
+              <p class="font-label text-[11px] text-on-surface-variant italic mb-6">
+                Server has been running since April 6, 2026
+              </p>
+              <a
+                href="https://castleravenloft.duckdns.org/join"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-label text-[11px] uppercase tracking-[0.15em] text-primary hover:text-primary-container transition-colors duration-200"
+              >
+                Join the server &rarr;
+              </a>
+            </div>
+
+            <!-- Right: dashboard stats 2x2 -->
+            <div class="flex-shrink-0 md:w-56 grid grid-cols-2 gap-4 content-center">
+              <div class="p-5 rounded-xl bg-surface-container-low">
+                <p class="font-headline text-2xl text-primary leading-none mb-2">24 days</p>
+                <p class="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant leading-snug">Continuous uptime</p>
+              </div>
+              <div class="p-5 rounded-xl bg-surface-container-low">
+                <p class="font-headline text-2xl text-primary leading-none mb-2">0.38%</p>
+                <p class="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant leading-snug">RAM usage (90MB / 23GB)</p>
+              </div>
+              <div class="p-5 rounded-xl bg-surface-container-low">
+                <p class="font-headline text-2xl text-primary leading-none mb-2">0.07</p>
+                <p class="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant leading-snug">Average server load</p>
+              </div>
+              <div class="p-5 rounded-xl bg-surface-container-low">
+                <p class="font-headline text-2xl text-primary leading-none mb-2">Free tier</p>
+                <p class="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant leading-snug">Oracle Cloud hosting</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Card 3 — Enphase Battery Analysis -->
+        <div class="p-10 rounded-xl" style="background-color: #eef2ee;">
+          <div class="flex flex-col md:flex-row gap-10">
+
+            <!-- Left: project info + code block -->
+            <div class="flex-1 min-w-0">
+              <p class="font-label text-[10px] uppercase tracking-[0.2em] text-primary mb-2">ChatGPT &middot; Python &middot; Jupyter &middot; Polars &middot; Matplotlib</p>
+              <p class="font-label text-[10px] text-on-surface-variant mb-4">1.7M rows of field telemetry → data-backed marketing claims</p>
+              <h3 class="font-headline text-2xl text-on-surface mb-4">Fleet battery data analysis</h3>
+              <div class="space-y-4 text-[1rem] leading-[1.75] text-on-surface-variant mb-5">
+                <p>
+                  Traditional battery marketing is built around peak capacity and ideal conditions. But homes spend most of their time — up to 6,500 hours a year — running small loads like fridges, routers, and lights. This is precisely where conventional hybrid inverters are least efficient, dropping below 70% round-trip efficiency. Without field data, this was directionally understood but not proven at scale.
+                </p>
+                <p>
+                  The analysis processed 1.7 million rows of real Enphase Enlighten telemetry to quantify how much time homes actually spend in low-load conditions, and at which power bands. That data became the evidentiary foundation for the PowerMatch positioning — a fleet-backed answer to the question: how bad is the low-load efficiency problem in practice? The sales sheet below is the commercial output of that analysis.
+                </p>
+              </div>
+
+              <p class="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant mb-2">Published sales sheet informed by this analysis</p>
+              <a
+                href="https://enphase.com/en-gb/download/introducing-powermatch-iq-battery-5p"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-label text-[11px] uppercase tracking-[0.15em] text-primary hover:text-primary-container transition-colors duration-200 block mb-6"
+              >
+                Introducing PowerMatch — IQ Battery 5P &rarr;
+              </a>
+
+              <!-- Code snippet -->
+              <div class="code-block">
+                <span class="code-comment"># Group by site and timestamp</span><br>
+                site_power = (<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;df_clean<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;.<span class="code-method">group_by</span>([<span class="code-string">"Site Id"</span>, <span class="code-string">"Local Timestamp"</span>])<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;.<span class="code-method">agg</span>([<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pl.<span class="code-method">sum</span>(<span class="code-string">"Discharged Power(KW)"</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.<span class="code-method">alias</span>(<span class="code-string">"site_discharge_kw"</span>),<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pl.<span class="code-method">sum</span>(<span class="code-string">"Charged Power(KW)"</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.<span class="code-method">alias</span>(<span class="code-string">"site_charge_kw"</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;])<br>
+                )
+              </div>
+            </div>
+
+            <!-- Right: chart image -->
+            <div class="flex-shrink-0 md:w-72">
+              <img
+                src="battery_chart.png"
+                alt="Fleet Site Power Distribution by Activity Band"
+                class="w-full object-cover"
+                style="border-radius: 8px;"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              />
+              <!-- Fallback placeholder if image not yet added -->
+              <div
+                class="w-full h-52 bg-surface-container-low flex items-center justify-center text-center px-4"
+                style="border-radius: 8px; display: none;"
+              >
+                <p class="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Chart image — add battery_chart.png</p>
+              </div>
+              <p class="mt-3 font-label text-[10px] text-on-surface-variant leading-relaxed">
+                Fleet Site Power Distribution by Activity Band — generated from 1.7M rows of field telemetry
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Card 4 — Jira Report Summariser -->
+        <div class="p-10 rounded-xl" style="background-color: #eef2ee;">
+          <div class="flex flex-col md:flex-row gap-10">
+
+            <!-- Left: project info -->
+            <div class="flex-1 min-w-0">
+              <p class="font-label text-[10px] uppercase tracking-[0.2em] text-primary mb-2">Windsurf &middot; Cascade &middot; Python &middot; Jira API</p>
+              <p class="font-label text-[10px] text-on-surface-variant mb-4">Automated cross-project status reporting with AI analysis</p>
+              <h3 class="font-headline text-2xl text-on-surface mb-4">Jira sprint report summariser</h3>
+              <div class="space-y-4 text-[1rem] leading-[1.75] text-on-surface-variant">
+                <p>
+                  Tracking launch readiness across documentation, compliance, web, and app teams meant manually checking dozens of tickets across different Jira projects. Information was scattered, patterns were invisible, and things slipped.
+                </p>
+                <p>
+                  The tool pulls live Jira data and produces a structured status report with AI-generated analysis. It gives me three things: a single view across all projects and ticket states; early warning on which team is becoming a bottleneck before it becomes a blocker; and automatic surfacing of stale tickets — critical for compliance listings and grid whitelisting that can take 3–6 months and need consistent follow-up.
+                </p>
+              </div>
+            </div>
+
+            <!-- Right: demo link + note -->
+            <div class="flex-shrink-0 md:w-56 flex flex-col justify-center gap-5">
+              <a
+                href="jira_report_GenXBattery_demo.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block text-center font-label text-[11px] uppercase tracking-[0.15em] text-on-primary px-6 py-4 rounded-xl hover:opacity-90 transition-opacity duration-200"
+                style="background: linear-gradient(135deg, #005247, #1a6b5e);"
+              >
+                View demo report &rarr;
+              </a>
+              <p class="font-label text-[10px] text-on-surface-variant leading-relaxed">
+                Demo report uses fictional data generated for confidentiality. The tool runs against live Jira projects in production.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Navigation -->
+  <section class="bg-surface-container-low">
+    <div class="max-w-[780px] mx-auto px-6 pb-20 text-center">
+      <div class="h-[1px] mb-10" style="background-color: rgba(0, 82, 71, 0.20);"></div>
+      <a
+        href="index.html"
+        class="font-label text-[11px] uppercase tracking-[0.15em] text-primary hover:text-primary-container transition-colors duration-200"
+      >
+        &larr; Back to portfolio
+      </a>
+    </div>
+  </section>
+
+</body>
+</html>

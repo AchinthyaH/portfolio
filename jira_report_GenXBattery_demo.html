@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GenX Battery — Product Status Report — Demo (Fictional Data)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;font-size:14px;color:#1a1a2e;background:#f4f6f9}
+.container{max-width:1400px;margin:28px auto;padding:0 24px 70px}
+h1{font-size:26px;color:#0a3d62;margin-bottom:4px}
+h2{font-size:17px;color:#0a3d62;margin:30px 0 12px;border-bottom:2px solid #d5dce5;padding-bottom:6px}
+h3{font-size:14px;color:#2c3e50;margin:16px 0 8px;font-weight:600}
+.meta{font-size:12px;color:#7f8c8d;margin-bottom:20px}
+.demo-banner{background:#fff3cd;border:2px solid #ffc107;border-radius:6px;padding:14px 18px;margin-bottom:24px;font-size:13px;line-height:1.65;color:#856404}
+.demo-banner strong{color:#533f03}
+a{color:#2980b9}
+.assumptions{background:#eaf4fb;border-left:4px solid #3498db;padding:12px 16px;border-radius:4px;margin-bottom:22px;font-size:13px;line-height:1.65}
+.assumptions ul{margin-left:18px;margin-top:5px}
+.exec{background:#fff;border:1px solid #d5dce5;border-radius:6px;padding:18px 22px;line-height:1.75;font-size:14px}
+.exec p{margin-bottom:10px}.exec p:last-child{margin-bottom:0}
+.stat-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.stat-box{background:#fff;border:1px solid #d5dce5;border-radius:6px;padding:10px 18px;text-align:center;min-width:90px}
+.stat-box .num{font-size:26px;font-weight:700;color:#0a3d62}
+.stat-box .lbl{font-size:11px;color:#7f8c8d;margin-top:2px}
+details.bucket{margin-bottom:20px;border-radius:6px;padding:0}
+details.bucket>summary{list-style:none;cursor:pointer;padding:12px 16px;border-radius:6px;user-select:none}
+details.bucket>summary::-webkit-details-marker{display:none}
+details.bucket[open]>summary{border-radius:6px 6px 0 0}
+details.bucket>summary:hover{filter:brightness(0.97)}
+.bucket-header{display:flex;align-items:center;gap:10px}
+.bucket-count{font-size:12px;color:#555}
+.bucket-chevron{margin-left:auto;font-size:11px;color:#888}
+.bucket-chevron::after{content:"▶"}
+details.bucket[open] .bucket-chevron::after{content:"▼"}
+.bucket-body{padding:0 16px 14px;border:1px solid #d5dce5;border-top:none;border-radius:0 0 6px 6px}
+.badge{display:inline-block;padding:3px 11px;border-radius:16px;font-size:11px;font-weight:700;color:#fff;letter-spacing:.3px}
+.bg-complete{background:#e8f8f0}.badge-complete{background:#1e8449}
+.bg-review{background:#fef9ec}.badge-review{background:#b7770d}
+.bg-inprog{background:#fef3e2}.badge-inprog{background:#ca6f1e}
+.bg-blocked{background:#fdf0ef}.badge-blocked{background:#c0392b}
+.bg-notstart{background:#f4f6f7}.badge-notstart{background:#566573}
+.bg-unclear{background:#fdf2f8}.badge-unclear{background:#7d3c98}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #d5dce5;font-size:12.5px;border-radius:6px;overflow:hidden}
+th{background:#2c3e50;color:#fff;padding:9px 11px;text-align:left;font-size:11.5px;letter-spacing:.4px}
+td{padding:8px 11px;border-bottom:1px solid #eaecee;vertical-align:top;line-height:1.45}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f9fafb}
+.tid{font-family:monospace;font-size:12px;font-weight:700;color:#2980b9;text-decoration:none}
+.stale{font-size:11px;color:#c0392b;font-weight:700;margin-left:3px}
+.row-complete td:first-child{border-left:3px solid #1e8449}
+.row-review td:first-child{border-left:3px solid #b7770d}
+.row-inprog td:first-child{border-left:3px solid #ca6f1e}
+.row-blocked td:first-child{border-left:3px solid #c0392b}
+.row-notstart td:first-child{border-left:3px solid #566573}
+.row-unclear td:first-child{border-left:3px solid #7d3c98}
+.ai-section{background:#fff;border:1px solid #c5d5e8;border-radius:8px;margin-bottom:16px;overflow:hidden}
+.ai-section-header{background:linear-gradient(135deg,#1a3a5c,#2980b9);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:10px}
+.ai-section-header h3{color:#fff;margin:0;font-size:15px}
+.ai-badge{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);padding:2px 9px;border-radius:10px;font-size:10px;letter-spacing:.5px;font-weight:700}
+.ai-body{padding:16px 20px;line-height:1.75;font-size:13.5px}
+.ai-body p{margin-bottom:12px}.ai-body p:last-child{margin-bottom:0}
+.ai-body ul{margin:8px 0 12px 20px}
+.ai-body li{margin-bottom:6px}
+.ai-body strong{color:#1a3a5c}
+.ai-ref{font-family:monospace;font-size:11.5px;background:#eaf4fb;border:1px solid #b8d4ea;padding:1px 6px;border-radius:4px;color:#1a5276}
+.ai-disclaimer{background:#f0f4f8;border-top:1px solid #c5d5e8;padding:9px 20px;font-size:11px;color:#7f8c8d;font-style:italic}
+.obs-box{background:#fff;border:1px solid #d5dce5;border-radius:6px;padding:14px 18px;margin-bottom:10px;line-height:1.65}
+.obs-box ul{margin-left:18px;margin-top:6px;list-style:disc}
+.obs-box li{margin-bottom:6px}
+.flag-list{list-style:none;padding:0}
+.flag-list li{background:#fff;border:1px solid #d5dce5;border-radius:4px;padding:9px 14px;margin-bottom:7px;line-height:1.5;font-size:13px}
+.section-divider{border:none;border-top:1px solid #d5dce5;margin:28px 0}
+footer{text-align:center;margin-top:44px;font-size:11px;color:#bdc3c7}
+details.flag-details{margin-bottom:12px;border:1px solid #d5dce5;border-radius:6px;background:#fff;overflow:hidden}
+details.flag-details>summary{list-style:none;cursor:pointer;padding:11px 16px;background:#f8f9fa;user-select:none;display:flex;align-items:center;gap:10px}
+details.flag-details>summary::-webkit-details-marker{display:none}
+details.flag-details[open]>summary{border-bottom:1px solid #d5dce5}
+details.flag-details>summary:hover{background:#f0f2f5}
+.flag-icon{font-size:15px}
+.flag-title{font-weight:600;font-size:13.5px;color:#2c3e50}
+.flag-count{font-size:12px;color:#7f8c8d;margin-left:4px}
+details.flag-details .flag-list{padding:10px 16px 12px}
+details.flag-details .flag-list li{background:#fff;border:none;padding:7px 0;border-bottom:1px solid #f0f2f5;margin:0;font-size:13px;line-height:1.5}
+details.flag-details .flag-list li:last-child{border-bottom:none}
+details.flag-details>p{padding:10px 16px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="demo-banner">
+  <strong>⚠ Demo Report — Fictional Data Only</strong><br>
+  This report was generated using the same Jira summariser tool (built with Windsurf + Cascade) but populated with entirely fictional product names, team members, ticket IDs, and project data. It is shared here for portfolio purposes only. The tool runs against live Jira projects in production; this version substitutes fictional equivalents to protect confidential information.
+</div>
+
+<h1>GenX Battery — Product Status Report</h1>
+<p class="meta">
+  Generated: 2026-04-06 20:21 UTC &nbsp;|&nbsp;
+  Projects: DOC, WEBP, CLOUD, APP &nbsp;|&nbsp;
+  Data since: 2025-10-01 &nbsp;|&nbsp;
+  Source: enpase.atlassian.net (fictional)
+</p>
+
+<div class="assumptions">
+<strong>Assumptions &amp; Notes</strong>
+<ul>
+  <li>Tickets fetched from <strong>DOC, WEBP, CLOUD, APP</strong> with incremental delta fetch (only tickets updated since last run are re-fetched; older data is carried forward).</li>
+  <li>Product matching (case-insensitive): <em>GenX Battery, GenX, ENPASE-GENX-INT, ENPASE-GENX-ROW, GenX three-phase, GenX 3P</em></li>
+  <li>Exclusion terms: <em>GenX Lite, ENPASE-GENX-1P, Legacy Battery G4</em></li>
+  <li>Classification uses Jira status vocabulary first, then keyword scoring in ticket text.</li>
+  <li>Stale threshold: 14+ days without update (excluding completed tickets).</li>
+  <li>AI Analysis sections are generated by Cascade and clearly labelled. Verify against source tickets before acting.</li>
+</ul>
+</div>
+
+<h2>At a Glance</h2>
+<div class="stat-row">
+  <div class="stat-box"><div class="num">103</div><div class="lbl">Total Tickets</div></div>
+  <div class="stat-box"><div class="num">34</div><div class="lbl">DOC</div></div>
+  <div class="stat-box"><div class="num">12</div><div class="lbl">WEBP</div></div>
+  <div class="stat-box"><div class="num">31</div><div class="lbl">CLOUD</div></div>
+  <div class="stat-box"><div class="num">26</div><div class="lbl">APP</div></div>
+  <div class="stat-box"><div class="num" style="color:#1e8449">72</div><div class="lbl">Completed</div></div>
+  <div class="stat-box"><div class="num" style="color:#c0392b">13</div><div class="lbl">Blocked</div></div>
+  <div class="stat-box"><div class="num" style="color:#e67e22">17</div><div class="lbl">Stale (14d+)</div></div>
+</div>
+
+<h2>1. Executive Summary</h2>
+<div class="exec">
+  <p>Across <strong>DOC</strong>, <strong>WEBP</strong>, <strong>CLOUD</strong>, and <strong>APP</strong>, <strong>103 tickets</strong> were identified as related to <strong>GenX Battery / ENPASE-GENX-INT / GenX 3P</strong> (as of 2026-04-06 20:21 UTC).</p>
+  <p>Overall completion: <strong>72/103 (70%)</strong>. By project: DOC: 28/34 (82%); WEBP: 8/12 (67%); CLOUD: 22/31 (71%); APP: 14/26 (54%).</p>
+  <p><strong>13 tickets are blocked</strong>, which may affect delivery timelines. APP has the lowest completion rate at 54% and the highest proportion of blocked tickets.</p>
+  <p><strong>17 active tickets have not been updated in 14+ days</strong> — these may need follow-up. The oldest stale item is 142 days without an update.</p>
+</div>
+
+<hr class="section-divider">
+
+<h2>2. DOC Tickets — Technical Documentation</h2>
+<div class="stat-row">
+  <div class="stat-box"><div class="num" style="font-size:20px">3</div><div class="lbl">Blocked</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">2</div><div class="lbl">In Progress</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">1</div><div class="lbl">In Review</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">0</div><div class="lbl">Not Started</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">28</div><div class="lbl">Completed</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">0</div><div class="lbl">Unclear</div></div>
+</div>
+
+<details class="bucket bg-blocked">
+<summary><div class="bucket-header"><span class="badge badge-blocked">Blocked / Waiting on Dependency</span><span class="bucket-count">3 tickets</span><span class="bucket-chevron"></span></div></summary>
+<div class="bucket-body"><table><thead><tr><th>Ticket ID</th><th>Summary</th><th>Status</th><th>Classification</th><th>Assignee</th><th>Last Updated</th></tr></thead><tbody>
+<tr class="row-blocked"><td class="tid">DOC-4821</td><td>Update System Planning Guide for Nordic markets — GenX 3P</td><td>Hold</td><td><span class="badge badge-blocked" style="font-size:10.5px">Blocked</span></td><td>Colleague 1</td><td>2026-03-28</td></tr>
+<tr class="row-blocked"><td class="tid">DOC-4633</td><td>[Doc creation] RMA documentation for GenX — Balkan markets</td><td>Hold</td><td><span class="badge badge-blocked" style="font-size:10.5px">Blocked</span></td><td>Colleague 2</td><td>2026-03-12<span class="stale">⚠ 25d</span></td></tr>
+<tr class="row-blocked"><td class="tid">DOC-4290</td><td>Translation — GenX QIG for Finnish and Estonian markets</td><td>Authoring Hold</td><td><span class="badge badge-blocked" style="font-size:10.5px">Blocked</span></td><td>Colleague 3</td><td>2025-11-14<span class="stale">⚠ 142d</span></td></tr>
+</tbody></table></div></details>
+
+<details class="bucket bg-inprog">
+<summary><div class="bucket-header"><span class="badge badge-inprog">In Progress</span><span class="bucket-count">2 tickets</span><span class="bucket-chevron"></span></div></summary>
+<div class="bucket-body"><table><thead><tr><th>Ticket ID</th><th>Summary</th><th>Status</th><th>Classification</th><th>Assignee</th><th>Last Updated</th></tr></thead><tbody>
+<tr class="row-inprog"><td class="tid">DOC-5103</td><td>Update GenX commissioning guide — revised wiring diagrams for 3P</td><td>In Authoring</td><td><span class="badge badge-inprog" style="font-size:10.5px">In Progress</span></td><td>Colleague 1</td><td>2026-04-05</td></tr>
+<tr class="row-inprog"><td class="tid">DOC-5088</td><td>GenX datasheet update — revised peak discharge spec</td><td>In Authoring</td><td><span class="badge badge-inprog" style="font-size:10.5px">In Progress</span></td><td>Colleague 4</td><td>2026-04-03</td></tr>
+</tbody></table></div></details>
+
+<details class="bucket bg-review">
+<summary><div class="bucket-header"><span class="badge badge-review">In Review</span><span class="bucket-count">1 ticket</span><span class="bucket-chevron"></span></div></summary>
+<div class="bucket-body"><table><thead><tr><th>Ticket ID</th><th>Summary</th><th>Status</th><th>Classification</th><th>Assignee</th><th>Last Updated</th></tr></thead><tbody>
+<tr class="row-review"><td class="tid">DOC-5091</td><td>GenX homeowner guide — updated for app-linked monitoring features</td><td>Editorial Review</td><td><span class="badge badge-review" style="font-size:10.5px">In Review</span></td><td>Achinthya Hemachandra</td><td>2026-04-06</td></tr>
+</tbody></table></div></details>
+
+<details class="bucket bg-complete">
+<summary><div class="bucket-header"><span class="badge badge-complete">Completed</span><span class="bucket-count">28 tickets</span><span class="bucket-chevron"></span></div></summary>
+<div class="bucket-body"><table><thead><tr><th>Ticket ID</th><th>Summary</th><th>Status</th><th>Classification</th><th>Assignee</th><th>Last Updated</th></tr></thead><tbody>
+<tr class="row-complete"><td class="tid">DOC-4950</td><td>GenX datasheet — DE, AT, CH markets</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 2</td><td>2026-04-01</td></tr>
+<tr class="row-complete"><td class="tid">DOC-4951</td><td>GenX datasheet — NL, BE markets</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 2</td><td>2026-04-01</td></tr>
+<tr class="row-complete"><td class="tid">DOC-4952</td><td>GenX datasheet — FR, IT markets</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 3</td><td>2026-03-28</td></tr>
+<tr class="row-complete"><td class="tid">DOC-4780</td><td>GenX QIG — EN international master</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 1</td><td>2026-03-20</td></tr>
+<tr class="row-complete"><td class="tid">DOC-4781</td><td>GenX QIG — FR translation</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 4</td><td>2026-03-20</td></tr>
+<tr class="row-complete"><td class="tid">DOC-4782</td><td>GenX QIG — DE translation</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 4</td><td>2026-03-18</td></tr>
+<tr class="row-complete"><td class="tid">DOC-4783</td><td>GenX QIG — IT translation</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 3</td><td>2026-03-15</td></tr>
+<tr class="row-complete"><td class="tid">DOC-4784</td><td>GenX QIG — NL translation</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 3</td><td>2026-03-15</td></tr>
+<tr class="row-complete"><td class="tid">DOC-4600</td><td>System Planning Guide — DACH markets</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 1</td><td>2026-03-01</td></tr>
+<tr class="row-complete"><td class="tid">DOC-4601</td><td>System Planning Guide — Benelux markets</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 1</td><td>2026-02-28</td></tr>
+<tr class="row-complete"><td class="tid">DOC-4602</td><td>System Planning Guide — France and Italy</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 2</td><td>2026-02-25</td></tr>
+<tr class="row-complete"><td class="tid">DOC-4400</td><td>GenX warranty document — EU master</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 2</td><td>2026-02-10</td></tr>
+<tr class="row-complete"><td class="tid">DOC-4401</td><td>GenX warranty document — ANZ</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 3</td><td>2026-02-10</td></tr>
+<tr class="row-complete"><td class="tid">DOC-4200</td><td>IEC 62619 compliance documentation — GenX 3P</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 4</td><td>2026-01-20</td></tr>
+<tr class="row-complete"><td class="tid">DOC-4100</td><td>GenX installation guide — AU/NZ</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 1</td><td>2025-12-15</td></tr>
+<tr class="row-complete"><td class="tid">DOC-3980</td><td>GenX commissioning guide — EU master</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 2</td><td>2025-12-01</td></tr>
+<tr class="row-complete"><td class="tid">DOC-3850</td><td>GenX best practices guide — installer edition</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Achinthya Hemachandra</td><td>2025-11-20</td></tr>
+<tr class="row-complete"><td class="tid">DOC-3700</td><td>GenX safety data sheet — international</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 3</td><td>2025-11-10</td></tr>
+<tr class="row-complete"><td class="tid">DOC-3500</td><td>GenX technical reference manual v1.0</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 4</td><td>2025-10-28</td></tr>
+<tr class="row-complete"><td class="tid">DOC-3501</td><td>GenX FAE training deck — DACH</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Achinthya Hemachandra</td><td>2025-10-25</td></tr>
+<tr class="row-complete"><td class="tid">DOC-3502</td><td>GenX FAE training deck — Benelux</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Achinthya Hemachandra</td><td>2025-10-25</td></tr>
+<tr class="row-complete"><td class="tid">DOC-3503</td><td>GenX FAE training deck — France</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Achinthya Hemachandra</td><td>2025-10-22</td></tr>
+<tr class="row-complete"><td class="tid">DOC-3300</td><td>GenX sales sheet — EU master</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Achinthya Hemachandra</td><td>2025-10-15</td></tr>
+<tr class="row-complete"><td class="tid">DOC-3301</td><td>GenX competitive positioning one-pager</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Achinthya Hemachandra</td><td>2025-10-12</td></tr>
+<tr class="row-complete"><td class="tid">DOC-3100</td><td>GenX homeowner guide — EN master</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 1</td><td>2025-10-08</td></tr>
+<tr class="row-complete"><td class="tid">DOC-3101</td><td>GenX homeowner guide — DE translation</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 2</td><td>2025-10-08</td></tr>
+<tr class="row-complete"><td class="tid">DOC-3102</td><td>GenX homeowner guide — FR translation</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 3</td><td>2025-10-05</td></tr>
+<tr class="row-complete"><td class="tid">DOC-3103</td><td>GenX homeowner guide — NL translation</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 3</td><td>2025-10-05</td></tr>
+</tbody></table></div></details>
+
+<hr class="section-divider">
+
+<h2>3. WEBP Tickets — Web &amp; Digital</h2>
+<div class="stat-row">
+  <div class="stat-box"><div class="num" style="font-size:20px">1</div><div class="lbl">Blocked</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">2</div><div class="lbl">In Progress</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">1</div><div class="lbl">In Review</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">0</div><div class="lbl">Not Started</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">8</div><div class="lbl">Completed</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">0</div><div class="lbl">Unclear</div></div>
+</div>
+
+<details class="bucket bg-blocked">
+<summary><div class="bucket-header"><span class="badge badge-blocked">Blocked</span><span class="bucket-count">1 ticket</span><span class="bucket-chevron"></span></div></summary>
+<div class="bucket-body"><table><thead><tr><th>Ticket ID</th><th>Summary</th><th>Status</th><th>Classification</th><th>Assignee</th><th>Last Updated</th></tr></thead><tbody>
+<tr class="row-blocked"><td class="tid">WEBP-812</td><td>GenX product comparison page — GenX vs Legacy G4 vs Competitor X</td><td>Internal QA</td><td><span class="badge badge-blocked" style="font-size:10.5px">Blocked</span></td><td>Colleague 5</td><td>2025-12-02<span class="stale">⚠ 125d</span></td></tr>
+</tbody></table></div></details>
+
+<details class="bucket bg-inprog">
+<summary><div class="bucket-header"><span class="badge badge-inprog">In Progress</span><span class="bucket-count">2 tickets</span><span class="bucket-chevron"></span></div></summary>
+<div class="bucket-body"><table><thead><tr><th>Ticket ID</th><th>Summary</th><th>Status</th><th>Classification</th><th>Assignee</th><th>Last Updated</th></tr></thead><tbody>
+<tr class="row-inprog"><td class="tid">WEBP-901</td><td>GenX product page update — Nordic markets (FI, SE, DK, NO)</td><td>In Dev</td><td><span class="badge badge-inprog" style="font-size:10.5px">In Progress</span></td><td>Colleague 5</td><td>2026-04-04</td></tr>
+<tr class="row-inprog"><td class="tid">WEBP-888</td><td>GenX installer landing page — homeowner acquisition funnel update</td><td>In Dev</td><td><span class="badge badge-inprog" style="font-size:10.5px">In Progress</span></td><td>Colleague 6</td><td>2026-04-02</td></tr>
+</tbody></table></div></details>
+
+<details class="bucket bg-review">
+<summary><div class="bucket-header"><span class="badge badge-review">In Review</span><span class="bucket-count">1 ticket</span><span class="bucket-chevron"></span></div></summary>
+<div class="bucket-body"><table><thead><tr><th>Ticket ID</th><th>Summary</th><th>Status</th><th>Classification</th><th>Assignee</th><th>Last Updated</th></tr></thead><tbody>
+<tr class="row-review"><td class="tid">WEBP-895</td><td>GenX energy storage overview page — updated with app monitoring section</td><td>Internal QA</td><td><span class="badge badge-review" style="font-size:10.5px">In Review</span></td><td>Achinthya Hemachandra</td><td>2026-04-05</td></tr>
+</tbody></table></div></details>
+
+<details class="bucket bg-complete">
+<summary><div class="bucket-header"><span class="badge badge-complete">Completed</span><span class="bucket-count">8 tickets</span><span class="bucket-chevron"></span></div></summary>
+<div class="bucket-body"><table><thead><tr><th>Ticket ID</th><th>Summary</th><th>Status</th><th>Classification</th><th>Assignee</th><th>Last Updated</th></tr></thead><tbody>
+<tr class="row-complete"><td class="tid">WEBP-750</td><td>GenX product page — DACH go-live</td><td>Resolved</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 5</td><td>2026-03-10</td></tr>
+<tr class="row-complete"><td class="tid">WEBP-751</td><td>GenX product page — Benelux go-live</td><td>Resolved</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 5</td><td>2026-03-10</td></tr>
+<tr class="row-complete"><td class="tid">WEBP-752</td><td>GenX product page — France go-live</td><td>Resolved</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 6</td><td>2026-03-08</td></tr>
+<tr class="row-complete"><td class="tid">WEBP-680</td><td>GenX installer resource hub — EU launch</td><td>Resolved</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Achinthya Hemachandra</td><td>2026-02-14</td></tr>
+<tr class="row-complete"><td class="tid">WEBP-620</td><td>GenX homeowner FAQ page — EN master</td><td>Resolved</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 6</td><td>2025-12-20</td></tr>
+<tr class="row-complete"><td class="tid">WEBP-580</td><td>GenX product page — ANZ go-live</td><td>Resolved</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 5</td><td>2025-11-30</td></tr>
+<tr class="row-complete"><td class="tid">WEBP-510</td><td>GenX landing page — EU pre-launch teaser</td><td>Resolved</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 6</td><td>2025-10-22</td></tr>
+<tr class="row-complete"><td class="tid">WEBP-490</td><td>GenX Intersolar 2025 product announcement page</td><td>Resolved</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Achinthya Hemachandra</td><td>2025-10-10</td></tr>
+</tbody></table></div></details>
+
+<hr class="section-divider">
+
+<h2>4. CLOUD Tickets — Backend &amp; Cloud Services</h2>
+<div class="stat-row">
+  <div class="stat-box"><div class="num" style="font-size:20px">4</div><div class="lbl">Blocked</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">3</div><div class="lbl">In Progress</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">2</div><div class="lbl">In Review</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">0</div><div class="lbl">Not Started</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">22</div><div class="lbl">Completed</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">0</div><div class="lbl">Unclear</div></div>
+</div>
+
+<details class="bucket bg-blocked">
+<summary><div class="bucket-header"><span class="badge badge-blocked">Blocked</span><span class="bucket-count">4 tickets</span><span class="bucket-chevron"></span></div></summary>
+<div class="bucket-body"><table><thead><tr><th>Ticket ID</th><th>Summary</th><th>Status</th><th>Classification</th><th>Assignee</th><th>Last Updated</th></tr></thead><tbody>
+<tr class="row-blocked"><td class="tid">CLOUD-2241</td><td>GenX telemetry pipeline — Nordic region data routing</td><td>On Hold</td><td><span class="badge badge-blocked" style="font-size:10.5px">Blocked</span></td><td>Colleague 7</td><td>2026-03-05<span class="stale">⚠ 32d</span></td></tr>
+<tr class="row-blocked"><td class="tid">CLOUD-2198</td><td>GenX battery state API — firmware v2.4 compatibility layer</td><td>On Hold</td><td><span class="badge badge-blocked" style="font-size:10.5px">Blocked</span></td><td>Colleague 8</td><td>2026-02-18<span class="stale">⚠ 47d</span></td></tr>
+<tr class="row-blocked"><td class="tid">CLOUD-2055</td><td>GenX Enlighten data sync — 15-min interval reporting</td><td>Engineering Hold</td><td><span class="badge badge-blocked" style="font-size:10.5px">Blocked</span></td><td>Colleague 7</td><td>2026-01-14<span class="stale">⚠ 81d</span></td></tr>
+<tr class="row-blocked"><td class="tid">CLOUD-1988</td><td>GDPR data residency — EU customer data isolation for GenX telemetry</td><td>Legal Review</td><td><span class="badge badge-blocked" style="font-size:10.5px">Blocked</span></td><td>Colleague 9</td><td>2025-12-20<span class="stale">⚠ 107d</span></td></tr>
+</tbody></table></div></details>
+
+<details class="bucket bg-inprog">
+<summary><div class="bucket-header"><span class="badge badge-inprog">In Progress</span><span class="bucket-count">3 tickets</span><span class="bucket-chevron"></span></div></summary>
+<div class="bucket-body"><table><thead><tr><th>Ticket ID</th><th>Summary</th><th>Status</th><th>Classification</th><th>Assignee</th><th>Last Updated</th></tr></thead><tbody>
+<tr class="row-inprog"><td class="tid">CLOUD-2310</td><td>GenX real-time SOC feed — Enlighten dashboard integration</td><td>In Development</td><td><span class="badge badge-inprog" style="font-size:10.5px">In Progress</span></td><td>Colleague 8</td><td>2026-04-05</td></tr>
+<tr class="row-inprog"><td class="tid">CLOUD-2298</td><td>GenX alert system — critical fault push notifications</td><td>In Development</td><td><span class="badge badge-inprog" style="font-size:10.5px">In Progress</span></td><td>Colleague 7</td><td>2026-04-03</td></tr>
+<tr class="row-inprog"><td class="tid">CLOUD-2280</td><td>Energy export reporting — grid feed-in summary for homeowner view</td><td>In Development</td><td><span class="badge badge-inprog" style="font-size:10.5px">In Progress</span></td><td>Colleague 9</td><td>2026-03-30</td></tr>
+</tbody></table></div></details>
+
+<details class="bucket bg-review">
+<summary><div class="bucket-header"><span class="badge badge-review">In Review</span><span class="bucket-count">2 tickets</span><span class="bucket-chevron"></span></div></summary>
+<div class="bucket-body"><table><thead><tr><th>Ticket ID</th><th>Summary</th><th>Status</th><th>Classification</th><th>Assignee</th><th>Last Updated</th></tr></thead><tbody>
+<tr class="row-review"><td class="tid">CLOUD-2305</td><td>GenX firmware OTA — staged rollout infrastructure</td><td>QA Review</td><td><span class="badge badge-review" style="font-size:10.5px">In Review</span></td><td>Colleague 8</td><td>2026-04-04</td></tr>
+<tr class="row-review"><td class="tid">CLOUD-2290</td><td>GenX installer commissioning API — v2 endpoint documentation</td><td>Technical Review</td><td><span class="badge badge-review" style="font-size:10.5px">In Review</span></td><td>Achinthya Hemachandra</td><td>2026-04-02</td></tr>
+</tbody></table></div></details>
+
+<details class="bucket bg-complete">
+<summary><div class="bucket-header"><span class="badge badge-complete">Completed</span><span class="bucket-count">22 tickets</span><span class="bucket-chevron"></span></div></summary>
+<div class="bucket-body"><table><thead><tr><th>Ticket ID</th><th>Summary</th><th>Status</th><th>Classification</th><th>Assignee</th><th>Last Updated</th></tr></thead><tbody>
+<tr class="row-complete"><td class="tid">CLOUD-2200</td><td>GenX system controller pairing API — production release</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 7</td><td>2026-03-25</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-2180</td><td>GenX Enlighten monitoring — battery tile v2</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 8</td><td>2026-03-18</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-2100</td><td>GenX tariff-aware charging — cloud scheduling engine</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 9</td><td>2026-03-10</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-2050</td><td>GenX storm guard — cloud trigger logic</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 7</td><td>2026-02-28</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-1950</td><td>GenX self-consumption optimisation — ML model v1</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 8</td><td>2026-02-15</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-1800</td><td>GenX API gateway — rate limiting and auth refresh</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 9</td><td>2026-01-30</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-1750</td><td>GenX telemetry ingestion — EU region prod deployment</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 7</td><td>2026-01-20</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-1700</td><td>GenX telemetry ingestion — ANZ region prod deployment</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 7</td><td>2026-01-15</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-1600</td><td>GenX backup power mode — cloud mode switching logic</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 8</td><td>2025-12-20</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-1500</td><td>GenX commissioning flow — cloud onboarding state machine</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 9</td><td>2025-12-10</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-1400</td><td>GenX device registration — serial number validation service</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 7</td><td>2025-11-28</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-1300</td><td>GenX data retention policy — 90-day raw telemetry purge</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 9</td><td>2025-11-15</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-1200</td><td>GenX webhook service — installer event notifications</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 8</td><td>2025-11-01</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-1100</td><td>GenX cloud infrastructure — EU multi-AZ setup</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 7</td><td>2025-10-25</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-1050</td><td>GenX monitoring dashboards — ops team Grafana setup</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 9</td><td>2025-10-18</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-1000</td><td>GenX battery telemetry schema v1 — finalised</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 8</td><td>2025-10-10</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-980</td><td>GenX firmware version tracking — cloud metadata store</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 7</td><td>2025-10-08</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-960</td><td>GenX site configuration API — installer portal integration</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 9</td><td>2025-10-06</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-940</td><td>GenX Enlighten integration — device pairing handshake</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 8</td><td>2025-10-04</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-920</td><td>GenX load balancer config — prod environment</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 7</td><td>2025-10-03</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-900</td><td>GenX staging environment — EU region setup</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 9</td><td>2025-10-02</td></tr>
+<tr class="row-complete"><td class="tid">CLOUD-880</td><td>GenX CI/CD pipeline — automated test suite integration</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 8</td><td>2025-10-01</td></tr>
+</tbody></table></div></details>
+
+<hr class="section-divider">
+
+<h2>5. APP Tickets — Homeowner &amp; Installer Mobile App</h2>
+<div class="stat-row">
+  <div class="stat-box"><div class="num" style="font-size:20px">5</div><div class="lbl">Blocked</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">4</div><div class="lbl">In Progress</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">3</div><div class="lbl">In Review</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">0</div><div class="lbl">Not Started</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">14</div><div class="lbl">Completed</div></div>
+  <div class="stat-box"><div class="num" style="font-size:20px">0</div><div class="lbl">Unclear</div></div>
+</div>
+
+<details class="bucket bg-blocked">
+<summary><div class="bucket-header"><span class="badge badge-blocked">Blocked</span><span class="bucket-count">5 tickets</span><span class="bucket-chevron"></span></div></summary>
+<div class="bucket-body"><table><thead><tr><th>Ticket ID</th><th>Summary</th><th>Status</th><th>Classification</th><th>Assignee</th><th>Last Updated</th></tr></thead><tbody>
+<tr class="row-blocked"><td class="tid">APP-1841</td><td>GenX battery widget — iOS dark mode rendering fix</td><td>Engineering Hold</td><td><span class="badge badge-blocked" style="font-size:10.5px">Blocked</span></td><td>Colleague 10</td><td>2026-03-28<span class="stale">⚠ 9d</span></td></tr>
+<tr class="row-blocked"><td class="tid">APP-1790</td><td>GenX time-of-use schedule — Android UI not reflecting cloud state</td><td>Engineering Hold</td><td><span class="badge badge-blocked" style="font-size:10.5px">Blocked</span></td><td>Colleague 11</td><td>2026-03-10<span class="stale">⚠ 27d</span></td></tr>
+<tr class="row-blocked"><td class="tid">APP-1720</td><td>GenX app localisation — Finnish and Swedish strings missing</td><td>On Hold</td><td><span class="badge badge-blocked" style="font-size:10.5px">Blocked</span></td><td>Colleague 10</td><td>2026-02-20<span class="stale">⚠ 45d</span></td></tr>
+<tr class="row-blocked"><td class="tid">APP-1650</td><td>GenX push notification — opt-in flow broken on Android 14</td><td>Engineering Hold</td><td><span class="badge badge-blocked" style="font-size:10.5px">Blocked</span></td><td>Colleague 11</td><td>2026-01-30<span class="stale">⚠ 65d</span></td></tr>
+<tr class="row-blocked"><td class="tid">APP-1580</td><td>GenX commissioning wizard — step 4 crash on iPhone 14 Pro</td><td>Engineering Hold</td><td><span class="badge badge-blocked" style="font-size:10.5px">Blocked</span></td><td>Colleague 10</td><td>2026-01-08<span class="stale">⚠ 87d</span></td></tr>
+</tbody></table></div></details>
+
+<details class="bucket bg-inprog">
+<summary><div class="bucket-header"><span class="badge badge-inprog">In Progress</span><span class="bucket-count">4 tickets</span><span class="bucket-chevron"></span></div></summary>
+<div class="bucket-body"><table><thead><tr><th>Ticket ID</th><th>Summary</th><th>Status</th><th>Classification</th><th>Assignee</th><th>Last Updated</th></tr></thead><tbody>
+<tr class="row-inprog"><td class="tid">APP-1880</td><td>GenX energy flow animation — homeowner dashboard v3</td><td>In Development</td><td><span class="badge badge-inprog" style="font-size:10.5px">In Progress</span></td><td>Colleague 11</td><td>2026-04-05</td></tr>
+<tr class="row-inprog"><td class="tid">APP-1875</td><td>GenX savings summary card — monthly view redesign</td><td>In Development</td><td><span class="badge badge-inprog" style="font-size:10.5px">In Progress</span></td><td>Colleague 10</td><td>2026-04-04</td></tr>
+<tr class="row-inprog"><td class="tid">APP-1860</td><td>GenX installer app — commissioning checklist v2</td><td>In Development</td><td><span class="badge badge-inprog" style="font-size:10.5px">In Progress</span></td><td>Colleague 11</td><td>2026-04-02</td></tr>
+<tr class="row-inprog"><td class="tid">APP-1845</td><td>GenX app — storm guard toggle and status display</td><td>In Development</td><td><span class="badge badge-inprog" style="font-size:10.5px">In Progress</span></td><td>Colleague 10</td><td>2026-03-30</td></tr>
+</tbody></table></div></details>
+
+<details class="bucket bg-review">
+<summary><div class="bucket-header"><span class="badge badge-review">In Review</span><span class="bucket-count">3 tickets</span><span class="bucket-chevron"></span></div></summary>
+<div class="bucket-body"><table><thead><tr><th>Ticket ID</th><th>Summary</th><th>Status</th><th>Classification</span><th>Assignee</th><th>Last Updated</th></tr></thead><tbody>
+<tr class="row-review"><td class="tid">APP-1870</td><td>GenX app — tariff schedule UI, iOS and Android</td><td>QA Review</td><td><span class="badge badge-review" style="font-size:10.5px">In Review</span></td><td>Colleague 11</td><td>2026-04-05</td></tr>
+<tr class="row-review"><td class="tid">APP-1855</td><td>GenX homeowner onboarding flow — revised welcome screens</td><td>Design Review</td><td><span class="badge badge-review" style="font-size:10.5px">In Review</span></td><td>Achinthya Hemachandra</td><td>2026-04-03</td></tr>
+<tr class="row-review"><td class="tid">APP-1830</td><td>GenX app accessibility audit — WCAG 2.1 AA compliance</td><td>Review</td><td><span class="badge badge-review" style="font-size:10.5px">In Review</span></td><td>Colleague 10</td><td>2026-03-28</td></tr>
+</tbody></table></div></details>
+
+<details class="bucket bg-complete">
+<summary><div class="bucket-header"><span class="badge badge-complete">Completed</span><span class="bucket-count">14 tickets</span><span class="bucket-chevron"></span></div></summary>
+<div class="bucket-body"><table><thead><tr><th>Ticket ID</th><th>Summary</th><th>Status</th><th>Classification</th><th>Assignee</th><th>Last Updated</th></tr></thead><tbody>
+<tr class="row-complete"><td class="tid">APP-1800</td><td>GenX battery status card — homeowner app v2.8</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 10</td><td>2026-03-22</td></tr>
+<tr class="row-complete"><td class="tid">APP-1780</td><td>GenX app — self-consumption chart, weekly view</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 11</td><td>2026-03-15</td></tr>
+<tr class="row-complete"><td class="tid">APP-1750</td><td>GenX installer commissioning — Bluetooth pairing flow</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 10</td><td>2026-03-01</td></tr>
+<tr class="row-complete"><td class="tid">APP-1700</td><td>GenX app — backup reserve slider UX</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 11</td><td>2026-02-20</td></tr>
+<tr class="row-complete"><td class="tid">APP-1650</td><td>GenX app — DE, FR, NL localisation strings v1</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 10</td><td>2026-02-10</td></tr>
+<tr class="row-complete"><td class="tid">APP-1600</td><td>GenX app — push notification framework</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 11</td><td>2026-01-25</td></tr>
+<tr class="row-complete"><td class="tid">APP-1500</td><td>GenX app — SOC display and charging state indicators</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 10</td><td>2025-12-20</td></tr>
+<tr class="row-complete"><td class="tid">APP-1400</td><td>GenX app — dark mode support, iOS and Android</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 11</td><td>2025-12-05</td></tr>
+<tr class="row-complete"><td class="tid">APP-1300</td><td>GenX app — installer commissioning v1 release</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 10</td><td>2025-11-20</td></tr>
+<tr class="row-complete"><td class="tid">APP-1200</td><td>GenX app — homeowner onboarding v1 release</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 11</td><td>2025-11-10</td></tr>
+<tr class="row-complete"><td class="tid">APP-1100</td><td>GenX app — energy flow diagram v1</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 10</td><td>2025-10-28</td></tr>
+<tr class="row-complete"><td class="tid">APP-1000</td><td>GenX app — authentication and account linking</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 11</td><td>2025-10-15</td></tr>
+<tr class="row-complete"><td class="tid">APP-900</td><td>GenX app — core architecture and state management</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 10</td><td>2025-10-08</td></tr>
+<tr class="row-complete"><td class="tid">APP-800</td><td>GenX app — design system and component library setup</td><td>Done</td><td><span class="badge badge-complete" style="font-size:10.5px">Completed</span></td><td>Colleague 11</td><td>2025-10-03</td></tr>
+</tbody></table></div></details>
+
+<hr class="section-divider">
+
+<h2>6. Cross-Project Observations</h2>
+<div class="obs-box"><ul>
+<li><strong>Hardware doc lag (DOC → WEBP):</strong> 28 DOC tickets completed but WEBP Nordic pages still in progress. Verify doc centre uploads are complete before web pages go live.</li>
+<li><strong>Cloud blocking app (CLOUD → APP):</strong> CLOUD-2198 (firmware v2.4 compatibility layer) is blocking at least 2 APP tickets downstream. APP completion rate of 54% is partly explained by this upstream dependency.</li>
+<li><strong>GDPR blocker age:</strong> CLOUD-1988 has been in Legal Review for 107 days. EU data residency for GenX telemetry must be resolved before Nordic launch can proceed — this is a hard regulatory gate.</li>
+<li><strong>App localisation gap:</strong> DE, FR, NL strings are complete (APP-1650) but Finnish and Swedish are blocked (APP-1720). Nordic web pages are in progress but app is not ready to support those users.</li>
+<li><strong>Completion rates:</strong> DOC: 82%; WEBP: 67%; CLOUD: 71%; APP: 54%. APP is 28pp behind DOC.</li>
+</ul></div>
+
+<hr class="section-divider">
+
+<h2>7. Flagged Items</h2>
+<details class="flag-details" open>
+<summary><span class="flag-icon">🔴</span><span class="flag-title">Blocked Tickets</span><span class="flag-count">13 items</span><span class="bucket-chevron"></span></summary>
+<ul class="flag-list">
+<li>🔴 <span class="tid">DOC-4821</span> — Update System Planning Guide for Nordic markets — Colleague 1 — Last updated 9d ago</li>
+<li>🔴 <span class="tid">DOC-4633</span> — RMA documentation for Balkan markets — Colleague 2 — Last updated 25d ago</li>
+<li>🔴 <span class="tid">DOC-4290</span> — Finnish and Estonian QIG translation — Colleague 3 — Last updated 142d ago</li>
+<li>🔴 <span class="tid">WEBP-812</span> — GenX product comparison page — Colleague 5 — Last updated 125d ago</li>
+<li>🔴 <span class="tid">CLOUD-2241</span> — Nordic telemetry routing — Colleague 7 — Last updated 32d ago</li>
+<li>🔴 <span class="tid">CLOUD-2198</span> — Firmware v2.4 compatibility layer — Colleague 8 — Last updated 47d ago</li>
+<li>🔴 <span class="tid">CLOUD-2055</span> — 15-min interval reporting — Colleague 7 — Last updated 81d ago</li>
+<li>🔴 <span class="tid">CLOUD-1988</span> — GDPR data residency — Colleague 9 — Last updated 107d ago</li>
+<li>🔴 <span class="tid">APP-1841</span> — iOS dark mode rendering fix — Colleague 10 — Last updated 9d ago</li>
+<li>🔴 <span class="tid">APP-1790</span> — Android time-of-use UI sync issue — Colleague 11 — Last updated 27d ago</li>
+<li>🔴 <span class="tid">APP-1720</span> — Finnish and Swedish localisation strings — Colleague 10 — Last updated 45d ago</li>
+<li>🔴 <span class="tid">APP-1650</span> — Push notification opt-in broken on Android 14 — Colleague 11 — Last updated 65d ago</li>
+<li>🔴 <span class="tid">APP-1580</span> — iPhone 14 Pro commissioning wizard crash — Colleague 10 — Last updated 87d ago</li>
+</ul>
+</details>
+
+<details class="flag-details" open>
+<summary><span class="flag-icon">⚠</span><span class="flag-title">Stale Tickets (14+ days)</span><span class="flag-count">17 items</span><span class="bucket-chevron"></span></summary>
+<ul class="flag-list">
+<li>⚠ <span class="tid">DOC-4290</span> — Finnish/Estonian QIG translation — <strong>142 days stale</strong> — Colleague 3</li>
+<li>⚠ <span class="tid">WEBP-812</span> — Product comparison page — <strong>125 days stale</strong> — Colleague 5</li>
+<li>⚠ <span class="tid">CLOUD-1988</span> — GDPR data residency — <strong>107 days stale</strong> — Colleague 9</li>
+<li>⚠ <span class="tid">APP-1580</span> — iPhone 14 Pro commissioning crash — <strong>87 days stale</strong> — Colleague 10</li>
+<li>⚠ <span class="tid">CLOUD-2055</span> — 15-min interval reporting — <strong>81 days stale</strong> — Colleague 7</li>
+<li>⚠ <span class="tid">APP-1650</span> — Android 14 push notification — <strong>65 days stale</strong> — Colleague 11</li>
+<li>⚠ <span class="tid">APP-1720</span> — Finnish/Swedish localisation — <strong>45 days stale</strong> — Colleague 10</li>
+<li>⚠ <span class="tid">CLOUD-2198</span> — Firmware v2.4 compatibility — <strong>47 days stale</strong> — Colleague 8</li>
+<li>⚠ <span class="tid">CLOUD-2241</span> — Nordic telemetry routing — <strong>32 days stale</strong> — Colleague 7</li>
+<li>⚠ <span class="tid">APP-1790</span> — Android TOU UI sync — <strong>27 days stale</strong> — Colleague 11</li>
+<li>⚠ <span class="tid">DOC-4633</span> — RMA documentation Balkan — <strong>25 days stale</strong> — Colleague 2</li>
+</ul>
+</details>
+
+<hr class="section-divider">
+
+<h2>8. AI Analysis <span style="font-size:12px;color:#7f8c8d;font-weight:normal">— generated by Cascade</span></h2>
+
+<div class="ai-section">
+<div class="ai-section-header"><span style="font-size:20px">🚀</span><h3>Launch Readiness</h3><span class="ai-badge">AI ANALYSIS</span></div>
+<div class="ai-body">
+<p><strong>Readiness Signal: 🟠 In Progress — Core markets live, Nordic launch blocked on multiple fronts.</strong></p>
+<p>The GenX Battery 3P product has completed its primary launch wave across DACH, Benelux, and France. ANZ is live. The open work represents a second wave targeting Nordic markets and ongoing app maturity improvements.</p>
+<ul>
+  <li><strong>DOC (34 tickets, 82%):</strong> The outstanding blocker is DOC-4290 — Finnish and Estonian QIG translations stale for 142 days. No active authoring is visible. If Nordic markets are a near-term target, this is a hard content gate. DOC-4821 (Nordic System Planning Guide) is also blocked, suggesting the Nordic documentation wave has stalled across multiple document types simultaneously.</li>
+  <li><strong>WEBP (12 tickets, 67%):</strong> WEBP-812 (product comparison page) has been in Internal QA for 125 days with no forward movement. Nordic product pages (WEBP-901) are in active development but will arrive before supporting documentation — a sequencing risk.</li>
+  <li><strong>CLOUD (31 tickets, 71%):</strong> CLOUD-1988 (GDPR data residency) has been in Legal Review for 107 days. EU data residency compliance is a regulatory hard gate for Nordic markets — Finland, Sweden, Denmark and Norway all fall under GDPR jurisdiction. Until this is resolved, GenX telemetry cannot be confirmed as compliant for those markets.</li>
+  <li><strong>APP (26 tickets, 54%):</strong> The lowest completion rate across all four projects. Five blocked tickets suggest systematic issues rather than isolated bugs. The commissioning wizard crash on iPhone 14 Pro (APP-1580, 87 days stale) is the most concerning — if installers cannot complete commissioning on a common device, it directly affects field adoption.</li>
+</ul>
+<p><strong>Conclusion:</strong> Core markets are live and stable. Nordic launch is blocked on at least three independent fronts: documentation (DOC-4290), GDPR compliance (CLOUD-1988), and app localisation (APP-1720). These need to be treated as a coordinated launch gate rather than individual ticket items.</p>
+</div>
+<div class="ai-disclaimer">This section was generated by Cascade AI based on ticket data. It reflects pattern recognition and inference — verify against source tickets before acting.</div>
+</div>
+
+<div class="ai-section">
+<div class="ai-section-header"><span style="font-size:20px">⏱</span><h3>Velocity &amp; Bottlenecks</h3><span class="ai-badge">AI ANALYSIS</span></div>
+<div class="ai-body">
+<p>Analysis of ticket age, assignee load, and status patterns across DOC, WEBP, CLOUD, and APP:</p>
+<ul>
+  <li><strong>Nordic documentation cluster — 3 tickets, same root cause:</strong> DOC-4290, DOC-4821, and APP-1720 are all blocked on Nordic-language content or routing. These were likely created as part of the same Nordic launch planning exercise but have since stalled independently. No single owner appears to be tracking them as a cluster. A dedicated Nordic readiness ticket or sub-project would help.</li>
+  <li><strong>CLOUD-1988 (GDPR) — 107 days in Legal Review:</strong> This is the longest-running active blocker in the snapshot. Legal review cycles at this length typically indicate either deprioritisation or a genuinely complex legal question. Given that CLOUD-2241 (Nordic telemetry routing) is also blocked, and APP-1720 (Nordic app strings) is blocked, the GDPR ticket is the root blocker for the entire Nordic wave. It needs immediate escalation.</li>
+  <li><strong>APP blocked ticket pattern — 5 tickets across 3 engineers:</strong> The distribution of blocked APP tickets across Colleague 10 and Colleague 11 suggests a shared upstream dependency (likely CLOUD-2198, the firmware v2.4 compatibility layer) rather than individual engineering capacity issues. Resolving CLOUD-2198 is likely to unblock multiple APP tickets simultaneously.</li>
+  <li><strong>WEBP-812 (comparison page) — 125 days in QA:</strong> Internal QA completion does not guarantee deployment. This ticket has been QA-complete for over four months with no deployment signal. This is a commercial gap — buyers comparing GenX to competitors have no dedicated comparison resource on the live site.</li>
+</ul>
+</div>
+<div class="ai-disclaimer">This section was generated by Cascade AI based on ticket data. It reflects pattern recognition and inference — verify against source tickets before acting.</div>
+</div>
+
+<div class="ai-section">
+<div class="ai-section-header"><span style="font-size:20px">🔗</span><h3>Dependency Mismatches</h3><span class="ai-badge">AI ANALYSIS</span></div>
+<div class="ai-body">
+<p>Key upstream-downstream dependency gaps identified across the DOC → WEBP → CLOUD → APP pipeline:</p>
+<ul>
+  <li><strong>CLOUD-2198 blocking APP — no resolution timeline visible:</strong> The firmware v2.4 compatibility layer has been on hold for 47 days. At least APP-1790 (TOU UI sync) and APP-1650 (Android 14 push notifications) are downstream of this. No comment thread indicates a target resolution date.</li>
+  <li><strong>GDPR blocking Nordic telemetry and app simultaneously:</strong> CLOUD-1988, CLOUD-2241, and APP-1720 all share a root dependency on EU data residency compliance being confirmed. These are tracked as separate tickets with no visible parent epic linking them. Risk of one being resolved without the others being updated.</li>
+  <li><strong>DOC Nordic gap has no downstream WEBP ticket staged:</strong> WEBP-901 (Nordic product pages) is in active development, but DOC-4290 (Finnish/Estonian QIG) has been stale for 142 days. If WEBP-901 goes live before the documentation is ready, users arriving from Nordic product pages will find no localised documentation in the doc centre.</li>
+  <li><strong>APP-1855 (homeowner onboarding redesign) in Design Review:</strong> This ticket is assigned to Achinthya Hemachandra and is in active review. It has dependencies on the updated app welcome screens being aligned with the revised onboarding content in DOC-5091 (homeowner guide update, also in review). These two tickets should be confirmed as aligned before either progresses to production.</li>
+</ul>
+</div>
+<div class="ai-disclaimer">This section was generated by Cascade AI based on ticket data. It reflects pattern recognition and inference — verify against source tickets before acting.</div>
+</div>
+
+<div class="ai-section">
+<div class="ai-section-header"><span style="font-size:20px">💬</span><h3>Sentiment &amp; Urgency Signals</h3><span class="ai-badge">AI ANALYSIS</span></div>
+<div class="ai-body">
+<p>Comment thread analysis across 103 tickets in DOC, WEBP, CLOUD, and APP:</p>
+<ul>
+  <li><strong>DOC-4290 (Finnish/Estonian QIG) — urgency expressed, still unresolved:</strong> A comment from Colleague 3 in November 2025 notes "translation vendor confirmed, awaiting source file sign-off." The source file sign-off has not been completed 142 days later. This is the strongest urgency signal in the snapshot — a commitment was made and not followed up.</li>
+  <li><strong>APP-1580 (iPhone 14 Pro commissioning crash) — installer impact signal:</strong> Comment from field team: "Two installers reporting this in DACH. Commissioning taking 2x longer as workaround." At 87 days without a fix, this is directly impacting installer experience in live markets. The bug severity appears to have been underestimated at triage.</li>
+  <li><strong>CLOUD-1988 (GDPR) — legal team engaged, no timeline:</strong> The last comment from Colleague 9: "Legal have reviewed and have follow-up questions — awaiting response." No date. Legal review cycles without a defined response SLA tend to expand indefinitely. Recommend setting a formal response deadline.</li>
+  <li><strong>APP-1855 and DOC-5091 (Achinthya Hemachandra) — both in active review, well-coordinated:</strong> Comment threads on both tickets show active cross-referencing between the homeowner guide update and the app onboarding redesign. This is a positive signal — the PM is actively managing the dependency rather than treating them as independent deliverables.</li>
+  <li><strong>Overall tone:</strong> The product is in a healthy state for its primary markets. The most concerning pattern is the Nordic launch cluster — three independent workstreams (docs, compliance, app) all stalled without a visible co-ordinating owner. Recommend a dedicated Nordic launch readiness sync to unblock these as a group.</li>
+</ul>
+</div>
+<div class="ai-disclaimer">This section was generated by Cascade AI based on ticket data. It reflects pattern recognition and inference — verify against source tickets before acting.</div>
+</div>
+
+<footer>Report generated by Cascade + Python &bull; 2026-04-06 20:21 UTC &bull; GenXBattery (Demo — Fictional Data) &bull; DOC, WEBP, CLOUD, APP</footer>
+</div>
+</body>
+</html>
